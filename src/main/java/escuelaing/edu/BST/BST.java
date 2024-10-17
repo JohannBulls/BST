@@ -5,6 +5,20 @@ import java.util.*;
 public class BST<E extends Comparable<E>> implements List<E> {
     private Node<E> root;
     private int size = 0;
+    
+
+    private static class Node<E> {
+        E value;
+        Node<E> left, right;
+
+        Node(E value) {
+            this.value = value;
+        }
+    }
+
+    public Node<E> getRoot() {
+        return root;
+    }
 
     @Override
     public boolean add(E value) {
@@ -40,16 +54,18 @@ public class BST<E extends Comparable<E>> implements List<E> {
             return null;
         }
         if (value.compareTo(current.value) == 0) {
+
             if (current.left == null && current.right == null) {
-                return null; // Node with no children
+                return null;
             }
+
             if (current.right == null) {
-                return current.left; // Node with one child
+                return current.left;
             }
             if (current.left == null) {
-                return current.right; // Node with one child
+                return current.right;
             }
-            // Node with two children
+
             E smallestValue = findMin(current.right);
             current.value = smallestValue;
             current.right = removeRecursive(current.right, smallestValue);
@@ -96,15 +112,15 @@ public class BST<E extends Comparable<E>> implements List<E> {
         return current.right == null ? current.value : findMax(current.right);
     }
 
-    public void inOrderTraversal(List<E> result) {
-        inOrderTraversal(root, result);
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
     }
 
-    private void inOrderTraversal(Node<E> node, List<E> result) {
+    private void inOrderTraversal(Node<E> node) {
         if (node != null) {
-            inOrderTraversal(node.left, result);
-            result.add(node.value);
-            inOrderTraversal(node.right, result);
+            inOrderTraversal(node.left);
+            System.out.print(node.value + " ");
+            inOrderTraversal(node.right);
         }
     }
 
@@ -124,13 +140,10 @@ public class BST<E extends Comparable<E>> implements List<E> {
         return size == 0;
     }
 
-    // Implementar métodos restantes de List<E>
 
     @Override
     public E get(int index) {
-        List<E> list = new ArrayList<>();
-        inOrderTraversal(list);
-        return list.get(index);
+        throw new UnsupportedOperationException("get() no está implementado");
     }
 
     @Override
@@ -157,15 +170,31 @@ public class BST<E extends Comparable<E>> implements List<E> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException("retainAll() not implemented");
+        boolean modified = false;
+        for (Node<E> current = root; current != null;) {
+            if (!c.contains(current.value)) {
+                remove(current.value);
+                modified = true;
+            }
+            current = current.left; 
+        }
+        return modified;
     }
 
     @Override
     public Object[] toArray() {
         Object[] arr = new Object[size];
-        List<E> list = new ArrayList<>();
-        inOrderTraversal(list);
-        return list.toArray(arr);
+        inOrderTraversalToArray(root, arr, 0);
+        return arr;
+    }
+
+    private int inOrderTraversalToArray(Node<E> node, Object[] arr, int index) {
+        if (node != null) {
+            index = inOrderTraversalToArray(node.left, arr, index);
+            arr[index++] = node.value;
+            index = inOrderTraversalToArray(node.right, arr, index);
+        }
+        return index;
     }
 
     @Override
@@ -175,56 +204,57 @@ public class BST<E extends Comparable<E>> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        throw new UnsupportedOperationException("iterator() not implemented");
+        throw new UnsupportedOperationException("iterator() no está implementado");
     }
 
     @Override
     public int indexOf(Object o) {
-        throw new UnsupportedOperationException("indexOf() not implemented");
+        throw new UnsupportedOperationException("indexOf() no está implementado");
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException("lastIndexOf() not implemented");
+        throw new UnsupportedOperationException("lastIndexOf() no está implementado");
     }
 
     @Override
     public ListIterator<E> listIterator() {
-        throw new UnsupportedOperationException("listIterator() not implemented");
+        throw new UnsupportedOperationException("listIterator() no está implementado");
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        throw new UnsupportedOperationException("listIterator(index) not implemented");
+        throw new UnsupportedOperationException("listIterator(index) no está implementado");
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException("subList() not implemented");
+        throw new UnsupportedOperationException("subList() no está implementado");
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        throw new UnsupportedOperationException("containsAll() not implemented");
+        throw new UnsupportedOperationException("containsAll() no está implementado");
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        throw new UnsupportedOperationException("addAll(index, c) not implemented");
+        throw new UnsupportedOperationException("addAll(int, Collection) no está implementado");
     }
 
     @Override
     public E set(int index, E element) {
-        throw new UnsupportedOperationException("set() not implemented");
+        throw new UnsupportedOperationException("set() no está implementado");
     }
 
     @Override
     public void add(int index, E element) {
-        throw new UnsupportedOperationException("add(index, element) not implemented");
+        throw new UnsupportedOperationException("add(int, E) no está implementado");
     }
 
     @Override
-    public boolean remove(int index) {
-        throw new UnsupportedOperationException("remove(index) not implemented");
+    public E remove(int index) {
+        throw new UnsupportedOperationException("remove(int) no está implementado");
     }
+
 }
